@@ -33,8 +33,8 @@ void thrusterTest::inputNThrusters(int numberThrusters){
 void thrusterTest::initiateTest(int numThrusters){
 	if (numThrusters > 0 && numThrusters <= 40){
 //		clearData();
-		cout << "a" << endl;
-		nThrusters = numThrusters;
+//		cout << "a" << endl;
+		nThrusters = numThrusters*2 + 2;
 		timeData = new double*[nThrusters];
 		xAccelData = new double*[nThrusters];
 		yAccelData = new double*[nThrusters];
@@ -71,10 +71,11 @@ void thrusterTest::initiateTest(int numThrusters){
 // Function called continuously by software, can be at users chosen frequency, any frequency at least as high as 0.5 Hz is sufficient.
 // DataRequest -1 means stop IMU. 1 means start. 2 means send current data arrays into autoInputData.
 // ThrusterRequest -1 means stop thruster(thrusterRequestNum). 1 means start full power. 2 means start full power backwards. 3 means release from 90 deg.
-void thrusterTest::runTest(int& thrusterRequest, int& thrusterRequestNum, int& dataRequest){
-	time_t presentTime;
+void thrusterTest::runTest(int& thrusterRequest, int& thrusterRequestNum, int& dataRequest, bool& testComplete){
+	time_t presentTime; 
 	int testTime;
-	if (currentTestThruster < nThrusters ){
+	testComplete = false;
+	if (currentTestThruster < nThrusters - 2 ){
 		if (testIncrement == 1){
 			thrusterRequestNum = currentTestThruster;
 			thrusterRequest = 0;
@@ -135,10 +136,10 @@ void thrusterTest::runTest(int& thrusterRequest, int& thrusterRequestNum, int& d
 			}
 		}
 	}
-	else if (currentTestThruster >= nThrusters){
+	else if (currentTestThruster >= nThrusters - 2){
 		if (currentTestThruster < nThrusters){
 			if (testIncrement == 1){
-				cout << "Place vehicle at 90 degrees from Z axis."<<endl;
+				cout << "Please place vehicle at 90 degrees from Z axis."<<endl;
 				presentTime = time(0);
 				timeStart = presentTime;
 				thrusterRequest = 0;
@@ -192,7 +193,11 @@ void thrusterTest::runTest(int& thrusterRequest, int& thrusterRequestNum, int& d
 			}
 		}
 		else{
-			cout << "Thruster Testing Completed." << endl;
+			dataRequest = 0;
+			thrusterRequest = 0;
+			thrusterRequestNum = currentTestThruster-1;
+			bool testComplete = true;
+//			cout << "Calibration Testing Completed." << endl;
 		}
 	}
 	
@@ -272,9 +277,7 @@ void thrusterTest::IMUInput(double* data, int thrusterNum, int axis, int numData
 
 void thrusterTest::clearData(){
 	int i;
-//	int j;
 	for (i = 0; i < nThrusters; i++){
-//		for (j = 0; j < dataLength[j]; j++){
 		delete[] timeData[i];
 		delete[] xAccelData[i];
 		delete[] yAccelData[i];
