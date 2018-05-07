@@ -21,7 +21,9 @@ class thrusterTest{
 
 
 
-
+//			How thruster numbers are stored is each two thruster numbers is thruster foreward and backward. Starting at zero.
+//			So thruster number 3 and 4 in the software corresponds to thruster number 2, foreward and backward.
+//			The final two thruster numbers store the buoyancy test data by rotating the vehicle sideways then forward.
 //	private:
 		int nThrusters;
 		double **timeData;

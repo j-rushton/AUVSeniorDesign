@@ -90,7 +90,12 @@ void thrusterTest::runTest(int& thrusterRequest, int& thrusterRequestNum, int& d
 			thrusterRequestNum = currentTestThruster;
 			dataRequest = 0;
 			if (testTime - timeStart > 1){
-				thrusterRequest = 1;
+				if ((currentTestThruster) % 2 == 1){
+					thrusterRequest = 2;
+				}
+				else{
+					thrusterRequest = 1;
+				}
 				presentTime = time(0);
 				timeStart = presentTime;
 				testIncrement = 3;
@@ -139,7 +144,12 @@ void thrusterTest::runTest(int& thrusterRequest, int& thrusterRequestNum, int& d
 	else if (currentTestThruster >= nThrusters - 2){
 		if (currentTestThruster < nThrusters){
 			if (testIncrement == 1){
-				cout << "Please place vehicle at 90 degrees from Z axis."<<endl;
+				if ((currentTestThruster) % 2 == 1){
+					cout << "Place vehicle at 90 degrees from Z axis, pointing nose down or up." << endl;
+				}
+				else{
+					cout << "Please place vehicle at 90 degrees from Z axis, with left side facing up." << endl;
+				}
 				presentTime = time(0);
 				timeStart = presentTime;
 				thrusterRequest = 0;

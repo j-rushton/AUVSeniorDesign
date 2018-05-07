@@ -18,9 +18,7 @@ MOIRelation::~MOIRelation(){
 
 void MOIRelation::configNThrusters(int nThrusters){
 	numThrusters = nThrusters;
-	delete angAccelX;
-	delete angAccelY;
-	delete angAccelZ;
+	clearData();
 	int i;
 	angAccelX = new double[nThrusters];
 	for (i = 0; i < nThrusters; i++){
@@ -85,10 +83,7 @@ void MOIRelation::findGreatestRotThrusters(){
 
 
 void MOIRelation::estimateMOIRelation(){  //Function assumes that two thrusters with greatest influence on Z and other axis and tangentially equidistance from COM.
-	int i;
 	double MOIYoverX = angAccelBuoyancyX / angAccelBuoyancyY;
-	
-	
 	double estimatedAngAccZ;
 	estimatedAngAccZ = pow(angAccelX[thrustGreatestZ] * angAccelX[thrustGreatestZ] + angAccelY[thrustGreatestZ] * angAccelY[thrustGreatestZ] + angAccelZ[thrustGreatestZ] * angAccelZ[thrustGreatestZ], 0.5);
 	//  This executes if the X axis has a thruster with greater incluence on it than the Y axis.
